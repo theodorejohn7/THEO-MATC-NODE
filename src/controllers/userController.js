@@ -6,7 +6,7 @@ exports.newUser = async (req, res) => {
   try {
     const {
       name,
-    
+
       eMail,
       password,
       userName,
@@ -28,7 +28,7 @@ exports.newUser = async (req, res) => {
 
     const newUser = new User({
       name,
-   
+
       eMail,
       password,
       userName,
@@ -152,8 +152,8 @@ exports.deleteUser = async (req, res) => {
 
 exports.loginUser = async (req, res) => {
   try {
-    const { eMail, password } = req.body;
-    const user = await User.findOne({ eMail }).exec();
+    const { userName, password } = req.body;
+    const user = await User.findOne({ userName }).exec();
 
     if (!user) {
       return res.status(401).send({
@@ -176,6 +176,7 @@ exports.loginUser = async (req, res) => {
       message: "login successful",
     });
   } catch (error) {
+    console.log(error)
     res.status(500).send({
       error,
     });

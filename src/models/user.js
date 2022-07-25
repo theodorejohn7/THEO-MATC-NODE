@@ -5,8 +5,11 @@ const jwt = require("jsonwebtoken");
 const Schema = mongoose.Schema;
 
 const { JWT_SECRET } = process.env;
-
 const { REFRESH_TOKEN_SECRET } = process.env;
+const { ACCESS_EXPIRY } = process.env;
+const { REFRESH_EXPIRY } = process.env;
+
+
 
 const UserSchema = new Schema({
   name: {
@@ -55,18 +58,23 @@ UserSchema.methods.generateAuthToken = function () {
   const User = this;
   const secret = JWT_SECRET;
   const token = jwt.sign({ _id: User._id }, secret, {
-    expiresIn: "2m",
+    expiresIn: `${ACCESS_EXPIRY}`,
   });
+
   User.token = token;
+
 };
 
 UserSchema.methods.generateRefreshToken = function () {
   const User = this;
+ 
   const secret = REFRESH_TOKEN_SECRET;
   const refreshToken = jwt.sign({ _id: User._id }, secret, {
-    expiresIn: "5m",
+    expiresIn: `${REFRESH_EXPIRY}`,
   });
   User.refreshToken = refreshToken;
+  
+
 };
 
 UserSchema.pre("save", async function (next) {
