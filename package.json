@@ -1,8 +1,8 @@
 {
     "name": "access_refresh_tokens_node_express",
     "version": "1.0.0",
-    "description": "",
-    "main": "app.js",
+    "description": "theo node server with token",
+    "main": "server.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "start": "node server.js",
