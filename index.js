@@ -26,6 +26,10 @@ const User = require('./src/routes/user');
 
 app.use('/api/v1/user', User);
 
+const Products = require('./src/routes/products');
+
+app.use('/api', Products);
+
 app.listen(PORT, () => {
     console.log('Server is listening on Port:', PORT)
   })

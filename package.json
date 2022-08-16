@@ -2,14 +2,13 @@
     "name": "access_refresh_tokens_node_express",
     "version": "1.0.0",
     "description": "theo node server with token",
-    "engines":{
+    "engines": {
         "node": "14.x"
-      },
+    },
     "main": "index.js",
     "scripts": {
-      
-        "start": "node index.js"
-      
+        "start": "node index.js",
+        "serve": "nodemon index.js"
     },
     "author": "",
     "license": "",
