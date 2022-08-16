@@ -183,6 +183,41 @@ exports.loginUser = async (req, res) => {
   }
 };
 
+// exports.refreshTokenUser = async (req, res) => {
+//   try {
+//     const { refreshToken } = req.headers["x-refresh-token"];
+//     const { accessToken } = req.headers["x-access-token"];
+
+//     if (!refreshToken) {
+//       return res.status(401).send({
+//         message: "No refresh token provided",
+//       });
+//     }
+
+//     await jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
+//     const user = await User.findOne(refreshToken._id).exec();
+
+//     if (!user) {
+//       return res.status(401).send({
+//         message: "User not found",
+//       });
+//     }
+
+//     await user.generateAuthToken();
+//     res.status(200).send({
+//       data: user.token,
+//       message: "Refresh token successful",
+//     });
+//   } catch (error) {
+//     console.log(error);
+//     res.status(500).send({
+//       error,
+//     });
+//   }
+// };
+
+// BACKUP - OLD CODE
+
 exports.refreshTokenUser = async (req, res) => {
   try {
     const { refreshToken } = req.body;
@@ -205,7 +240,7 @@ exports.refreshTokenUser = async (req, res) => {
     await user.generateAuthToken();
     res.status(200).send({
       data: user.token,
-      message: "Refresh token successful",
+      message: "Access token generated",
     });
   } catch (error) {
     console.log(error);

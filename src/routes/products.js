@@ -1,4 +1,6 @@
 const express = require("express");
+const jwt = require("jsonwebtoken");
+
 const Model = require("../models/products");
 const router = express.Router();
 
@@ -77,15 +79,21 @@ router.get("/getOne/:id", async (req, res) => {
 //Update by ID Method
 router.patch("/update/:id", async (req, res) => {
   try {
+    const accessToken = req.headers["x-access-token"];
+    decoded = jwt.verify(accessToken, process.env.JWT_SECRET);
+
     const id = req.params.id;
     const updatedData = req.body;
     const options = { new: true };
-
     const result = await Model.findByIdAndUpdate(id, updatedData, options);
     console.log("updated ", id);
     res.send(result);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    if (error.message === "jwt expired") {
+      res.status(403).json({ message: error.message });
+    } else {
+      res.status(500).json({ message: error.message });
+    }
   }
 });
 
