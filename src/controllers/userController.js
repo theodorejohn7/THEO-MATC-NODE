@@ -54,6 +54,93 @@ exports.newUser = async (req, res) => {
   }
 };
 
+exports.getUserDetail = async (req, res) => {
+  try {
+    const userName = req.params.username;
+    const user = await User.findOne({ userName });
+
+    if (!user) {
+      return res.status(404).send({
+        message: "User not found",
+      });
+    }
+
+    res.status(200).send({
+      data: user.secQuestion,
+    });
+  } catch (error) {
+    console.log("errror");
+    res.status(500).send({
+      error,
+    });
+  }
+};
+
+exports.forgetPassword = async (req, res) => {
+  try {
+    const { question, answer, userName } = req.body;
+    const user = await User.findOne({ userName });
+
+    if (!user) {
+      return res.status(404).send({
+        message: "User not found",
+      });
+    }
+
+    if (user.userName === userName && user.secAnswer === answer) {
+      res.status(200).send({
+        message: "valid user",
+      });
+    } else {
+      res.status(200).send({
+        message: "details mismatch",
+      });
+    }
+  } catch (error) {
+    res.status(500).send({
+      error,
+    });
+  }
+};
+
+exports.resetPassword = async (req, res) => {
+  try {
+    const { question, answer, userName, password } = req.body;
+    const user = await User.findOne({ userName });
+
+    if (!user) {
+      return res.status(404).send({
+        message: "User not found",
+      });
+    }
+
+    if (
+      user.userName === userName &&
+      user.secAnswer === answer &&
+      user.secQuestion === question
+    ) {
+      const actUser = await User.findById({ _id: user._id }).exec();
+
+      actUser.password = password;
+
+      await actUser.save();
+
+      res.status(200).send({
+        message: "password resetted",
+      });
+    } else {
+      res.status(200).send({
+        message: "details mismatch",
+      });
+    }
+  } catch (error) {
+    console.log("errror", error);
+    res.status(500).send({
+      error,
+    });
+  }
+};
+
 exports.getUser = async (req, res) => {
   try {
     const id = req.params._id;
@@ -176,7 +263,7 @@ exports.loginUser = async (req, res) => {
       message: "login successful",
     });
   } catch (error) {
-    console.log(error)
+    console.log(error);
     res.status(500).send({
       error,
     });

@@ -1,28 +1,31 @@
-const express = require('express');
+const express = require("express");
 
 const router = express.Router();
 
-const userController = require('../controllers/userController');
+const userController = require("../controllers/userController");
 
-const { auth } = require('../middleware/auth');
+const { auth } = require("../middleware/auth");
 
+router.post("/register", userController.newUser);
 
-router.post('/register', userController.newUser);
+router.get("/profile/:_id", auth, userController.getUser);
 
-router.get('/profile/:_id', auth, userController.getUser);
+router.get("/question/:username", userController.getUserDetail);
 
-router.get('/list', auth, userController.getUsers);
+router.post("/fgtPwd", userController.forgetPassword);
 
-router.put('/update/:_id', auth, userController.updateUser);
+router.post("/resetPwd", userController.resetPassword);
 
-router.delete('/delete/:_id', auth, userController.deleteUser);
+router.get("/list", auth, userController.getUsers);
 
-router.post('/login', userController.loginUser);
+router.put("/update/:_id", auth, userController.updateUser);
 
-router.post('/refresh', userController.refreshTokenUser);
+router.delete("/delete/:_id", auth, userController.deleteUser);
 
-router.get('/logout', userController.logoutUser);
+router.post("/login", userController.loginUser);
 
- 
+router.post("/refresh", userController.refreshTokenUser);
+
+router.get("/logout", userController.logoutUser);
 
 module.exports = router;
