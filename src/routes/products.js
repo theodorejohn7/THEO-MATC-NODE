@@ -7,6 +7,7 @@ const router = express.Router();
 //Post Method
 
 router.post("/post", async (req, res) => {
+  const bodyId = req.body.id;
   const data = new Model({
     id: req.body.id,
     title: req.body.title,
@@ -21,9 +22,17 @@ router.post("/post", async (req, res) => {
   });
 
   try {
-    const dataToSave = await data.save();
-    res.status(200).json(dataToSave);
+    const idStatus = await Model.findOne({ id: bodyId });
+    if (idStatus) {
+      return res.status(400).send({
+        message: "ID already exists",
+      });
+    } else {
+      const dataToSave = await data.save();
+      res.status(200).json(dataToSave);
+    }
   } catch (error) {
+    console.log("ERROR", error);
     res.status(400).json({ message: error.message });
   }
 });
