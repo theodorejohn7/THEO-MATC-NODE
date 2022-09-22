@@ -30,6 +30,10 @@ const Products = require('./src/routes/products');
 
 app.use('/api', Products);
 
+const HealthMonk = require('./src/routes/healthMonk');
+
+app.use('/hmkapi', HealthMonk);
+
 app.listen(PORT, () => {
     console.log('Server is listening on Port:', PORT)
   })
